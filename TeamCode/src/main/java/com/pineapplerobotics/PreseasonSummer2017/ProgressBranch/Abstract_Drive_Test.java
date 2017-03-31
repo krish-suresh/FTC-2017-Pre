@@ -30,41 +30,41 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package com.pineapplerobotics.PreseasonSummer2017.PersonalBranch.Brandon.AbstractTest;
+package com.pineapplerobotics.PreseasonSummer2017.ProgressBranch;
 
-import com.pineapplerobotics.velocityvortex.javacodeclasses.resources.RobotHardware;
-import com.pineapplerobotics.velocityvortex.javacodeclasses.resources.RobotVals;
-import com.pineapplerobotics.velocityvortex.javacodeclasses.resources.enums.PublicEnums;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 @TeleOp(name = "Tele", group = "Linear Opmode")
 @Disabled
-public class Abstract_Test extends LinearOpMode {
+public class Abstract_Drive_Test extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();
-    DcMotor d;
-    DcMotor b;
+    DcMotor LeftMotor;
+    DcMotor RightMotor;
+
+    RobotDrive r = new TankDrive();
 
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+        LeftMotor = hardwareMap.dcMotor.get("Left");
+        RightMotor = hardwareMap.dcMotor.get("right");
+
         waitForStart();
         runtime.reset();
-
-        RobotDrive r = new TankDrive();
 
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run : " + runtime.toString());
             telemetry.update();
-            r.drive(new DcMotor[]{d, b});
+            r.gamepadDrive(new DcMotor[]{LeftMotor, RightMotor},gamepad1);
         }
     }
 
