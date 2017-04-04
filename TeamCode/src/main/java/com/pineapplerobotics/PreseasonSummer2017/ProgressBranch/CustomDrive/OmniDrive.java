@@ -7,17 +7,17 @@ import com.qualcomm.robotcore.hardware.Gamepad;
  * Created by Brandon on 3/31/2017.
  */
 
-class OmniDrive extends RobotDrive {
+public class OmniDrive extends RobotDrive {
 
 
     @Override
-    String driveType() {
+    public String driveType() {
         String type = "OmniDrive";
         return type;
     }
 
     @Override
-    Boolean gamepadDrive(DcMotor[] Motors, Gamepad gamepad) {
+    public Boolean gamepadDrive(DcMotor[] Motors, Gamepad gamepad) {
         if (Motors.length == 4) {
 
             return true;
@@ -27,57 +27,57 @@ class OmniDrive extends RobotDrive {
     }
 
     @Override
-    Boolean drive(DcMotor[] Motors, double[] speeds) {
+    public Boolean drive(DcMotor[] Motors, double[] speeds) {
         return null;
     }
 
     @Override
-    void driveScale(double scale) {
+    public void driveScale(double scale) {
 
     }
 
     @Override
-    void enableDrive(boolean onoff) {
+    public void enableDrive(boolean onoff) {
 
     }
 
     @Override
-    void exponentialDriving(boolean onoff) {
+    public void exponentialDriving(boolean onoff) {
 
     }
 
     @Override
-    void driveRange(double MinDriveValue, double MaxDriveValue) {
+    public void driveRange(double MinDriveValue, double MaxDriveValue) {
 
     }
 
     @Override
-    String driveError() {
+    public String driveError() {
         return null;
     }
 
     @Override
-    double getDriveScale() {
+    public double getDriveScale() {
         return 0;
     }
 
     @Override
-    boolean isDriveEnabled() {
+    public boolean isDriveEnabled() {
         return false;
     }
 
     @Override
-    boolean isExponentialDrive() {
+    public boolean isExponentialDrive() {
         return false;
     }
 
     @Override
-    double getMaxDriveValue() {
+    public double getMaxDriveValue() {
         return 0;
     }
 
     @Override
-    double getMinDriveValue() {
+    public double getMinDriveValue() {
         return 0;
     }
 }

@@ -19,29 +19,29 @@ public class TankDrive extends RobotDrive {
 
     //Drive Settings
     @Override
-    void exponentialDriving(boolean onoff) {
+    public void exponentialDriving(boolean onoff) {
         exponentialDrive = onoff;
     }
 
     @Override
-    void driveRange(double MinDriveValue, double MaxDriveValue) {
+    public void driveRange(double MinDriveValue, double MaxDriveValue) {
         MinValue = MinDriveValue;
         MaxValue = MaxDriveValue;
     }
 
     @Override
-    void driveScale(double scale) {
+    public void driveScale(double scale) {
         driveMultiplier = scale;
     }
 
     @Override
-    void enableDrive(boolean onoff) {
+    public void enableDrive(boolean onoff) {
         driveEnabled = onoff;
     }
 
     //Main Drive Function
     @Override
-    Boolean gamepadDrive(DcMotor[] Motors, Gamepad gamepad) {
+    public Boolean gamepadDrive(DcMotor[] Motors, Gamepad gamepad) {
         if (driveEnabled) {
             if (MinValue > MaxValue) {
                 lastError = "Minimum Value is greater than Maximum value!";
@@ -73,7 +73,7 @@ public class TankDrive extends RobotDrive {
     }
 
     @Override
-    Boolean drive(DcMotor[] Motors, double[] speeds) {
+    public Boolean drive(DcMotor[] Motors, double[] speeds) {
         if (driveEnabled) {
             if (MinValue > MaxValue) {
                 lastError = "Minimum Value is greater than Maximum value!";
@@ -140,39 +140,39 @@ public class TankDrive extends RobotDrive {
 
     //Gets Last Error
     @Override
-    String driveError() {
+    public String driveError() {
         return lastError;
     }
 
     //Get Information
     @Override
-    String driveType() {
+    public String driveType() {
         String type = "TankDrive";
         return type;
     }
 
     @Override
-    double getDriveScale() {
-        return 0;
+    public double getDriveScale() {
+        return driveMultiplier;
     }
 
     @Override
-    boolean isDriveEnabled() {
-        return false;
+    public boolean isDriveEnabled() {
+        return driveEnabled;
     }
 
     @Override
-    boolean isExponentialDrive() {
-        return false;
+    public boolean isExponentialDrive() {
+        return exponentialDrive;
     }
 
     @Override
-    double getMaxDriveValue() {
+    public double getMaxDriveValue() {
         return MaxValue;
     }
 
     @Override
-    double getMinDriveValue() {
+    public double getMinDriveValue() {
         return MinValue;
     }
 }
