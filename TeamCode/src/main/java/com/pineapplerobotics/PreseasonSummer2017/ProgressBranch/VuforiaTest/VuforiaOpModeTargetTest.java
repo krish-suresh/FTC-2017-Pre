@@ -1,7 +1,6 @@
 
 package com.pineapplerobotics.PreseasonSummer2017.ProgressBranch.VuforiaTest;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.vuforia.HINT;
@@ -20,9 +19,9 @@ import org.firstinspires.ftc.teamcode.R;
  * Created by Brandon on 3/31/2017.
  */
 
-@TeleOp(name = "Vuforia", group = "Linear Opmode")
+@TeleOp(name = "VuforiaTarget", group = "Linear Opmode")
 
-public class VuforiaOpModeTest extends com.qualcomm.robotcore.eventloop.opmode.LinearOpMode {
+public class VuforiaOpModeTargetTest extends com.qualcomm.robotcore.eventloop.opmode.LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
 
@@ -36,15 +35,12 @@ public class VuforiaOpModeTest extends com.qualcomm.robotcore.eventloop.opmode.L
         params.cameraMonitorFeedback =  VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
 
         VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(params);
-        Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS,4);
+        Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS,5);
 
-        VuforiaTrackables beacons = vuforia.loadTrackablesFromAsset("FTC_2016-17");
+        VuforiaTrackables beacons = vuforia.loadTrackablesFromFile("target.jpg");
 
 
-        beacons.get(0).setName("Wheels");
-        beacons.get(1).setName("Tools");
-        beacons.get(2).setName("Legos");
-        beacons.get(3).setName("Gears");
+        beacons.get(0).setName("target");
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
