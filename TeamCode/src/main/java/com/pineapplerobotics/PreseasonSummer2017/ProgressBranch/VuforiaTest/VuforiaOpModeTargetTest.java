@@ -31,16 +31,15 @@ public class VuforiaOpModeTargetTest extends com.qualcomm.robotcore.eventloop.op
         VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(R.id.cameraMonitorViewId);
         params.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         params.vuforiaLicenseKey = "AdB8VB7/////AAAAGcfBp9I80URFkfBQFUyM+ptmQXBAMGx0svJKz7QE2nm20mBc/zI5sZNHfuP/ziIm+sYnO7fvPqUbFs8QWjRyXVEDmW4mMj+S+l+yaYRkpGZ/pmHyXiDb4aemHx0m70BulMNIce4+NVaCW5S/5BWNNev/AU0P+uWnHYuKNWzD2dPaRuprC4R6b/DgD1zeio1xlssYb9in9mfzn76gChOrE5B0ql6Q9FiHC5cTdacq2lKjm5nlkTiXz1e2jhVK3SddGoqM4FQ3mFks7/A88hFzlPfIIk45K2Lh7GvcVjuIiqNj5mTLaZJVqlsKdTQnKS4trJcc1YV9sjdbmh1agtn1UePy91fDj9uWSBdXvpIowv4B";
-
         params.cameraMonitorFeedback =  VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
+
+
         VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(params);
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS,1);
 
+
         VuforiaTrackables beacons = vuforia.loadTrackablesFromAsset("Target");
-
-
         beacons.get(0).setName("target");
-
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
@@ -49,18 +48,40 @@ public class VuforiaOpModeTargetTest extends com.qualcomm.robotcore.eventloop.op
 
         beacons.activate();
 
+        double calcDegrees = 0;
+        double calcDegreesV = 0;
         while (opModeIsActive()) {
             telemetry.addData("Status", "Run : " + runtime.toString());
-            telemetry.update();
 
             for(VuforiaTrackable beac : beacons){
                 OpenGLMatrix pose =  ((VuforiaTrackableDefaultListener) beac.getListener()).getPose();
                 if(pose!=null){
                     VectorF translation = pose.getTranslation();
-                    telemetry.addData(beac.getName() + " Translation", translation);
+                    //telemetry.addData(beac.getName() + " Translation", translation);
                     //if horizontal change the 1 & 2 to 0 & 2
                     double degreesToTurn =  Math.toDegrees(Math.atan2(translation.get(1),translation.get(2)));
-                    telemetry.addData(beac.getName() + "-Degrees", degreesToTurn);
+
+                    //telemetry.addData(beac.getName() + "-Degrees Horizontal", degreesToTurn);
+
+                    calcDegrees = 180 - Math.abs(degreesToTurn);
+
+                    if(degreesToTurn<0){
+                        calcDegrees= 0-calcDegrees;
+                    }
+
+                    telemetry.addData(beac.getName() + "-Calculated Degrees Horizontal",calcDegrees);
+
+                    double degreesToTurnV =  Math.toDegrees(Math.atan2(translation.get(0),translation.get(2)));
+
+                    //telemetry.addData(beac.getName() + "-Degrees Vertical", degreesToTurnV);
+
+                    calcDegreesV = 180 - Math.abs(degreesToTurnV);
+
+                    if(degreesToTurnV<0){
+                        calcDegreesV= 0-calcDegreesV;
+                    }
+
+                    telemetry.addData(beac.getName() + "-Calculated Degrees Vertical",calcDegreesV);
 
                 }
             }
