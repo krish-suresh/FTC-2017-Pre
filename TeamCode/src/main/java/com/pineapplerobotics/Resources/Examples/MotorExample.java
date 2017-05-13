@@ -4,7 +4,9 @@ package com.pineapplerobotics.Resources.Examples;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -31,6 +33,8 @@ public class MotorExample extends LinearOpMode {
         //This is where the motor is connected to the name of the motor that is set on the phone
         //Where name is, is the name of the motor on the phone
         ExampleMotor = hardwareMap.dcMotor.get("Name");
+
+        ExampleMotor.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
         runtime.reset();
