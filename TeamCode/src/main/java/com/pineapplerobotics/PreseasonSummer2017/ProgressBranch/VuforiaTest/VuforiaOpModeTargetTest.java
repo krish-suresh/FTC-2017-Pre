@@ -2,7 +2,11 @@
 package com.pineapplerobotics.PreseasonSummer2017.ProgressBranch.VuforiaTest;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.Range;
 import com.vuforia.HINT;
 import com.vuforia.Vuforia;
 
@@ -24,7 +28,14 @@ import org.firstinspires.ftc.teamcode.R;
 public class VuforiaOpModeTargetTest extends com.qualcomm.robotcore.eventloop.opmode.LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
+    double maxSpeedH = .03;
+    double maxSpeedUp = .06;
+    double maxSpeedDown = .03;
 
+    DcMotor Rotate;
+    DcMotor Tilt;
+
+    Servo Trigger;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -37,6 +48,15 @@ public class VuforiaOpModeTargetTest extends com.qualcomm.robotcore.eventloop.op
         VuforiaLocalizer vuforia = ClassFactory.createVuforiaLocalizer(params);
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS,1);
 
+        Rotate = hardwareMap.dcMotor.get("r");
+        Tilt = hardwareMap.dcMotor.get("t");
+
+        Rotate.setDirection(DcMotorSimple.Direction.REVERSE);
+        Tilt.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        Trigger = hardwareMap.servo.get("tr");
+
+        Trigger.setPosition(1);
 
         VuforiaTrackables beacons = vuforia.loadTrackablesFromAsset("Target");
         beacons.get(0).setName("target");
@@ -71,6 +91,10 @@ public class VuforiaOpModeTargetTest extends com.qualcomm.robotcore.eventloop.op
 
                     telemetry.addData(beac.getName() + "-Calculated Degrees Horizontal",calcDegrees);
 
+                    double rotateSpeed = Range.clip(calcDegrees/300, -maxSpeedH,maxSpeedH);
+
+                    Rotate.setPower(rotateSpeed);
+
                     double degreesToTurnV =  Math.toDegrees(Math.atan2(translation.get(0),translation.get(2)));
 
                     //telemetry.addData(beac.getName() + "-Degrees Vertical", degreesToTurnV);
@@ -83,7 +107,21 @@ public class VuforiaOpModeTargetTest extends com.qualcomm.robotcore.eventloop.op
 
                     telemetry.addData(beac.getName() + "-Calculated Degrees Vertical",calcDegreesV);
 
+                    double tiltSpeed = Range.clip(calcDegreesV/300,-maxSpeedUp, maxSpeedDown);
+
+                    Tilt.setPower(tiltSpeed);
+
+                }else{
+                    Rotate.setPower(0);
+                    Tilt.setPower(-.05);
                 }
+                if (gamepad1.a && gamepad1.b){
+                    Trigger.setPosition(0);
+                }
+                else{
+                    Trigger.setPosition(1);
+                }
+
             }
             telemetry.update();
 
